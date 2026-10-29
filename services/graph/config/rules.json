@@ -1,0 +1,6 @@
+{
+  "behaviorScore": 0.60,
+  "minSignals": 2,
+  "repeatedFlowsMin": 2,
+  "passThroughRatioMin": 0.4
+}

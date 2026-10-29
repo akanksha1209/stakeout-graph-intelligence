@@ -1,0 +1,16 @@
+{
+  "weights": {
+    "passThroughRatio": 0.25,
+    "fanIn": 0.10,
+    "fanOut": 0.10,
+    "medianForwardTime": 0.25,
+    "hopsToExit": 0.20,
+    "repeatedFlows": 0.10
+  },
+  "thresholds": {
+    "fanInMin": 3,
+    "fanOutMin": 3,
+    "rapidForwardTimeMaxSeconds": 3600,
+    "hopsToExitMax": 2
+  }
+}
