@@ -1,0 +1,456 @@
+{
+  "generated_at": "2026-10-28T21:31:15.195460+00:00",
+  "seed": 42,
+  "data_source": "synthetic",
+  "clusters": {
+    "0x806999e7692593a57fb87637f87fe82a9b08fdea0fdd31f1ba34cb697290400b": {
+      "scenario": "scam_cluster",
+      "cluster_id": "0x806999e7692593a57fb87637f87fe82a9b08fdea0fdd31f1ba34cb697290400b",
+      "master": "0x8ba8f83718aa8f3bd1f65e8144e61d9ab30fcb06",
+      "members": [
+        "0x8ba8f83718aa8f3bd1f65e8144e61d9ab30fcb06",
+        "0xa6c1ad8f2906e732b10f4db789d35ea68c088ab3",
+        "0xf648818ba4a6656be0cb6e382a5dff72ac1dda96",
+        "0x908137478bd536cf4b778ade1fe7a9010b3341c2",
+        "0xbd2b4acec46edf287a43b9b21175306c76a81a57"
+      ],
+      "exit_points": [
+        "0xbd2b4acec46edf287a43b9b21175306c76a81a57"
+      ],
+      "data_source": "synthetic"
+    }
+  },
+  "scenarios": {
+    "scam_cluster": {
+      "cluster_id": "0x806999e7692593a57fb87637f87fe82a9b08fdea0fdd31f1ba34cb697290400b",
+      "description": "4 victims funnel to master, layered through 3 wallets, consolidated into 1 exit point.",
+      "master": "0x8ba8f83718aa8f3bd1f65e8144e61d9ab30fcb06",
+      "victims": [
+        "0x9d79b1a37f31801cd11a6706fb40d6bd57526846",
+        "0x903bb13ede562439e9c1b823a96089bca71f3d1a",
+        "0x6d2d3cadb3669cbd50e165e434249d8b829f4116",
+        "0x69842a979911036cf3e822086ecaa0075a69fc17"
+      ],
+      "intermediates": [
+        "0xa6c1ad8f2906e732b10f4db789d35ea68c088ab3",
+        "0xf648818ba4a6656be0cb6e382a5dff72ac1dda96",
+        "0x908137478bd536cf4b778ade1fe7a9010b3341c2"
+      ],
+      "exit_point": "0xbd2b4acec46edf287a43b9b21175306c76a81a57",
+      "members": [
+        "0x8ba8f83718aa8f3bd1f65e8144e61d9ab30fcb06",
+        "0xa6c1ad8f2906e732b10f4db789d35ea68c088ab3",
+        "0xf648818ba4a6656be0cb6e382a5dff72ac1dda96",
+        "0x908137478bd536cf4b778ade1fe7a9010b3341c2",
+        "0xbd2b4acec46edf287a43b9b21175306c76a81a57"
+      ],
+      "data_source": "synthetic"
+    },
+    "rotation": {
+      "description": "Exit point funds new wallet which immediately forwards onward (address hopping).",
+      "funded_by": "0xbd2b4acec46edf287a43b9b21175306c76a81a57",
+      "rotated_wallet": "0x3eb63291eea059e0cf3ac9b7d7ba8e506fb16e36",
+      "forwarded_target": "0x15d4caa7b19ecd7fd02148654d987ae265ca1fea",
+      "data_source": "synthetic"
+    },
+    "framing": {
+      "description": "3 fresh addresses send micro dust to an innocent target to simulate guilt by association.",
+      "target": "0xe4bd50fff09f5eff84b56923a8507082df0d577e",
+      "framing_wallets": [
+        "0xd8d645178af07ac195d10f0c963d71dc35f7111c",
+        "0xdf9b2027c44da0a08194f4288cb6c5ca540434ae",
+        "0xe8ac126c3443ae98105a4310451c806222cdb161"
+      ],
+      "data_source": "synthetic"
+    },
+    "dusting": {
+      "description": "Scam cluster member sends dust to a critic address (tainting attack).",
+      "sender": "0xa6c1ad8f2906e732b10f4db789d35ea68c088ab3",
+      "critic": "0x5f6926806ef40fc33421bc2d1c6df7816ffaa1e9",
+      "dust_amount": 0.000809,
+      "data_source": "synthetic"
+    },
+    "hard_negative": {
+      "description": "High fan-in and fan-out commercial merchant with legitimate organic cash flows.",
+      "merchant": "0x61e833c315475b2962be148a3f8f18f48f1054c7",
+      "customers": [
+        "0xc5a324ec1e42c587dd6322ebd17a2500b46e5499",
+        "0x3be4fb528543157d826dfc04fb5ca31c3168d9ed",
+        "0xb54eec5cb0eaf3e08b053efc3908e8d42dcb88ce",
+        "0xff3eb94e37bf4c3d1a2fd40ea9c2a93db83cc5e0",
+        "0xe24d3e9176476bf2076c29146962ed15cf4b5ebb",
+        "0xe1de697c60e6e6d048e9b71100315dfac5d2b6c2",
+        "0x666e5f88b4b90dc450d731205d43de200c6ee5a8",
+        "0x1e1bac79ccac64f2b0edbf8cabc2452a43c0da43"
+      ],
+      "suppliers": [
+        "0x03a115879ac557df26bd499b9fc4526cc07ce0f6",
+        "0x216838365e46cdedfb4e0f8a530f59c12ac3dcba",
+        "0x5c2a9bb0dfa27e33e6d283b69aa3cc4ffa5b2466",
+        "0xbe1bc2fe39adf3ab8e685ea6717c985fa1532770"
+      ],
+      "data_source": "synthetic"
+    },
+    "noise": {
+      "description": "Normal peer-to-peer noise transactions.",
+      "transactions": [
+        {
+          "from": "0x9b537bbfba6748502b62a20ec220d60cbaa98c95",
+          "to": "0xeacf0e7a64cdba8067f45cebcad94bdafbe1f787",
+          "amount": 0.1817
+        },
+        {
+          "from": "0xe5824d28e0a88f0e229bf5f5620c0182532f8214",
+          "to": "0xd095f1d99639922f299d8a118138549810e26511",
+          "amount": 0.2829
+        },
+        {
+          "from": "0xccbadaacec2ea0dc9652363cafd55d678ae3b01e",
+          "to": "0x8b710cf199dee9e3783fd69114f8073f030a3494",
+          "amount": 0.4984
+        },
+        {
+          "from": "0x566832987e822c0a65c98f9e54ddfc14e352526b",
+          "to": "0x929b49a80c8c6b9533b6b2909516d5853f9dfd50",
+          "amount": 0.4517
+        }
+      ],
+      "data_source": "synthetic"
+    }
+  },
+  "wallets": {
+    "0x9d79b1a37f31801cd11a6706fb40d6bd57526846": {
+      "address": "0x9d79b1a37f31801cd11a6706fb40d6bd57526846",
+      "role": "victim",
+      "scenario": "scam_cluster",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x903bb13ede562439e9c1b823a96089bca71f3d1a": {
+      "address": "0x903bb13ede562439e9c1b823a96089bca71f3d1a",
+      "role": "victim",
+      "scenario": "scam_cluster",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x6d2d3cadb3669cbd50e165e434249d8b829f4116": {
+      "address": "0x6d2d3cadb3669cbd50e165e434249d8b829f4116",
+      "role": "victim",
+      "scenario": "scam_cluster",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x69842a979911036cf3e822086ecaa0075a69fc17": {
+      "address": "0x69842a979911036cf3e822086ecaa0075a69fc17",
+      "role": "victim",
+      "scenario": "scam_cluster",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x8ba8f83718aa8f3bd1f65e8144e61d9ab30fcb06": {
+      "address": "0x8ba8f83718aa8f3bd1f65e8144e61d9ab30fcb06",
+      "role": "scam_master",
+      "scenario": "scam_cluster",
+      "is_exit_point": false,
+      "is_scam": true,
+      "cluster_id": "0x806999e7692593a57fb87637f87fe82a9b08fdea0fdd31f1ba34cb697290400b",
+      "data_source": "synthetic"
+    },
+    "0xa6c1ad8f2906e732b10f4db789d35ea68c088ab3": {
+      "address": "0xa6c1ad8f2906e732b10f4db789d35ea68c088ab3",
+      "role": "layering_intermediate",
+      "scenario": "scam_cluster",
+      "is_exit_point": false,
+      "is_scam": true,
+      "cluster_id": "0x806999e7692593a57fb87637f87fe82a9b08fdea0fdd31f1ba34cb697290400b",
+      "data_source": "synthetic"
+    },
+    "0xf648818ba4a6656be0cb6e382a5dff72ac1dda96": {
+      "address": "0xf648818ba4a6656be0cb6e382a5dff72ac1dda96",
+      "role": "layering_intermediate",
+      "scenario": "scam_cluster",
+      "is_exit_point": false,
+      "is_scam": true,
+      "cluster_id": "0x806999e7692593a57fb87637f87fe82a9b08fdea0fdd31f1ba34cb697290400b",
+      "data_source": "synthetic"
+    },
+    "0x908137478bd536cf4b778ade1fe7a9010b3341c2": {
+      "address": "0x908137478bd536cf4b778ade1fe7a9010b3341c2",
+      "role": "layering_intermediate",
+      "scenario": "scam_cluster",
+      "is_exit_point": false,
+      "is_scam": true,
+      "cluster_id": "0x806999e7692593a57fb87637f87fe82a9b08fdea0fdd31f1ba34cb697290400b",
+      "data_source": "synthetic"
+    },
+    "0xbd2b4acec46edf287a43b9b21175306c76a81a57": {
+      "address": "0xbd2b4acec46edf287a43b9b21175306c76a81a57",
+      "role": "exit_point",
+      "scenario": "scam_cluster",
+      "is_exit_point": true,
+      "is_scam": true,
+      "cluster_id": "0x806999e7692593a57fb87637f87fe82a9b08fdea0fdd31f1ba34cb697290400b",
+      "data_source": "synthetic"
+    },
+    "0x3eb63291eea059e0cf3ac9b7d7ba8e506fb16e36": {
+      "address": "0x3eb63291eea059e0cf3ac9b7d7ba8e506fb16e36",
+      "role": "rotated_address",
+      "scenario": "rotation",
+      "is_exit_point": false,
+      "is_scam": true,
+      "cluster_id": "0x806999e7692593a57fb87637f87fe82a9b08fdea0fdd31f1ba34cb697290400b",
+      "data_source": "synthetic"
+    },
+    "0x15d4caa7b19ecd7fd02148654d987ae265ca1fea": {
+      "address": "0x15d4caa7b19ecd7fd02148654d987ae265ca1fea",
+      "role": "rotated_destination",
+      "scenario": "rotation",
+      "is_exit_point": false,
+      "is_scam": true,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0xe4bd50fff09f5eff84b56923a8507082df0d577e": {
+      "address": "0xe4bd50fff09f5eff84b56923a8507082df0d577e",
+      "role": "framed_victim",
+      "scenario": "framing",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0xd8d645178af07ac195d10f0c963d71dc35f7111c": {
+      "address": "0xd8d645178af07ac195d10f0c963d71dc35f7111c",
+      "role": "framing_burner",
+      "scenario": "framing",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0xdf9b2027c44da0a08194f4288cb6c5ca540434ae": {
+      "address": "0xdf9b2027c44da0a08194f4288cb6c5ca540434ae",
+      "role": "framing_burner",
+      "scenario": "framing",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0xe8ac126c3443ae98105a4310451c806222cdb161": {
+      "address": "0xe8ac126c3443ae98105a4310451c806222cdb161",
+      "role": "framing_burner",
+      "scenario": "framing",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x5f6926806ef40fc33421bc2d1c6df7816ffaa1e9": {
+      "address": "0x5f6926806ef40fc33421bc2d1c6df7816ffaa1e9",
+      "role": "critic_target",
+      "scenario": "dusting",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x61e833c315475b2962be148a3f8f18f48f1054c7": {
+      "address": "0x61e833c315475b2962be148a3f8f18f48f1054c7",
+      "role": "merchant",
+      "scenario": "hard_negative",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0xc5a324ec1e42c587dd6322ebd17a2500b46e5499": {
+      "address": "0xc5a324ec1e42c587dd6322ebd17a2500b46e5499",
+      "role": "merchant_customer",
+      "scenario": "hard_negative",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x3be4fb528543157d826dfc04fb5ca31c3168d9ed": {
+      "address": "0x3be4fb528543157d826dfc04fb5ca31c3168d9ed",
+      "role": "merchant_customer",
+      "scenario": "hard_negative",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0xb54eec5cb0eaf3e08b053efc3908e8d42dcb88ce": {
+      "address": "0xb54eec5cb0eaf3e08b053efc3908e8d42dcb88ce",
+      "role": "merchant_customer",
+      "scenario": "hard_negative",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0xff3eb94e37bf4c3d1a2fd40ea9c2a93db83cc5e0": {
+      "address": "0xff3eb94e37bf4c3d1a2fd40ea9c2a93db83cc5e0",
+      "role": "merchant_customer",
+      "scenario": "hard_negative",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0xe24d3e9176476bf2076c29146962ed15cf4b5ebb": {
+      "address": "0xe24d3e9176476bf2076c29146962ed15cf4b5ebb",
+      "role": "merchant_customer",
+      "scenario": "hard_negative",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0xe1de697c60e6e6d048e9b71100315dfac5d2b6c2": {
+      "address": "0xe1de697c60e6e6d048e9b71100315dfac5d2b6c2",
+      "role": "merchant_customer",
+      "scenario": "hard_negative",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x666e5f88b4b90dc450d731205d43de200c6ee5a8": {
+      "address": "0x666e5f88b4b90dc450d731205d43de200c6ee5a8",
+      "role": "merchant_customer",
+      "scenario": "hard_negative",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x1e1bac79ccac64f2b0edbf8cabc2452a43c0da43": {
+      "address": "0x1e1bac79ccac64f2b0edbf8cabc2452a43c0da43",
+      "role": "merchant_customer",
+      "scenario": "hard_negative",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x03a115879ac557df26bd499b9fc4526cc07ce0f6": {
+      "address": "0x03a115879ac557df26bd499b9fc4526cc07ce0f6",
+      "role": "merchant_supplier",
+      "scenario": "hard_negative",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x216838365e46cdedfb4e0f8a530f59c12ac3dcba": {
+      "address": "0x216838365e46cdedfb4e0f8a530f59c12ac3dcba",
+      "role": "merchant_supplier",
+      "scenario": "hard_negative",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x5c2a9bb0dfa27e33e6d283b69aa3cc4ffa5b2466": {
+      "address": "0x5c2a9bb0dfa27e33e6d283b69aa3cc4ffa5b2466",
+      "role": "merchant_supplier",
+      "scenario": "hard_negative",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0xbe1bc2fe39adf3ab8e685ea6717c985fa1532770": {
+      "address": "0xbe1bc2fe39adf3ab8e685ea6717c985fa1532770",
+      "role": "merchant_supplier",
+      "scenario": "hard_negative",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x9b537bbfba6748502b62a20ec220d60cbaa98c95": {
+      "address": "0x9b537bbfba6748502b62a20ec220d60cbaa98c95",
+      "role": "regular_user",
+      "scenario": "noise",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0xeacf0e7a64cdba8067f45cebcad94bdafbe1f787": {
+      "address": "0xeacf0e7a64cdba8067f45cebcad94bdafbe1f787",
+      "role": "regular_user",
+      "scenario": "noise",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0xe5824d28e0a88f0e229bf5f5620c0182532f8214": {
+      "address": "0xe5824d28e0a88f0e229bf5f5620c0182532f8214",
+      "role": "regular_user",
+      "scenario": "noise",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0xd095f1d99639922f299d8a118138549810e26511": {
+      "address": "0xd095f1d99639922f299d8a118138549810e26511",
+      "role": "regular_user",
+      "scenario": "noise",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0xccbadaacec2ea0dc9652363cafd55d678ae3b01e": {
+      "address": "0xccbadaacec2ea0dc9652363cafd55d678ae3b01e",
+      "role": "regular_user",
+      "scenario": "noise",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x8b710cf199dee9e3783fd69114f8073f030a3494": {
+      "address": "0x8b710cf199dee9e3783fd69114f8073f030a3494",
+      "role": "regular_user",
+      "scenario": "noise",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x566832987e822c0a65c98f9e54ddfc14e352526b": {
+      "address": "0x566832987e822c0a65c98f9e54ddfc14e352526b",
+      "role": "regular_user",
+      "scenario": "noise",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    },
+    "0x929b49a80c8c6b9533b6b2909516d5853f9dfd50": {
+      "address": "0x929b49a80c8c6b9533b6b2909516d5853f9dfd50",
+      "role": "regular_user",
+      "scenario": "noise",
+      "is_exit_point": false,
+      "is_scam": false,
+      "cluster_id": null,
+      "data_source": "synthetic"
+    }
+  }
+}

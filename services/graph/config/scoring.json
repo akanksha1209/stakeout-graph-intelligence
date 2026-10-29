@@ -1,0 +1,23 @@
+{
+  "name": "Stakeout Scam Behavior Scoring Configuration",
+  "version": "1.0.0-draft",
+  "description": "Weights and thresholds for graph heuristic scoring. Loaded dynamically by scoring engine to satisfy AGENTS.md Rule 1 (No Hardcoding).",
+  "weights": {
+    "passThroughRatio": 0.50,
+    "fanIn": 0.25,
+    "fanOut": 0.25,
+    "medianForwardTime": 0.15,
+    "hopsToExit": 0.10,
+    "repeatedFlows": 0.10
+  },
+  "thresholds": {
+    "behaviorScore": 0.40,
+    "minSignals": 1,
+    "fanInMin": 1,
+    "fanOutMin": 1,
+    "passThroughRatioMin": 0.4,
+    "rapidForwardTimeMaxSeconds": 3600,
+    "hopsToExitMax": 2,
+    "repeatedFlowsMin": 2
+  }
+}

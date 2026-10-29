@@ -1,0 +1,17 @@
+{
+  "name": "Stakeout Scam Behavior Scoring Configuration",
+  "version": "1.0.0-draft",
+  "description": "Weights and thresholds for graph behavioral heuristic scoring.",
+  "weights": {
+    "passThroughRatio": 0.50,
+    "fanIn": 0.25,
+    "fanOut": 0.25
+  },
+  "thresholds": {
+    "behaviorScore": 0.40,
+    "minSignals": 1,
+    "fanInMin": 1,
+    "fanOutMin": 1,
+    "passThroughRatioMin": 0.4
+  }
+}

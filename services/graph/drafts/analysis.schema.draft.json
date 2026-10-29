@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "StakeoutAnalysisDraftSchema",
+  "description": "Analysis response contract for crypto scam oracle graph intelligence (Deliverable for Person 2: Backend)",
+  "type": "object",
+  "required": [
+    "target",
+    "clusterId",
+    "behaviorScore",
+    "signals",
+    "members",
+    "exitPoints",
+    "linked",
+    "reason",
+    "dataSource",
+    "createdAt"
+  ],
+  "properties": {
+    "target": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Target Ethereum wallet address analyzed"
+    },
+    "clusterId": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{64}$",
+      "description": "bytes32 cluster identifier formatted as 0x + 64 hex characters"
+    },
+    "behaviorScore": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Scam behavior score normalized between 0.0 and 1.0"
+    },
+    "signals": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["name", "value"],
+            "properties": {
+              "name": { "type": "string" },
+              "value": { "type": ["number", "integer"] }
+            }
+          },
+          {
+            "type": "string"
+          }
+        ]
+      },
+      "description": "List of risk signals or signal metrics (e.g. fanIn, fanOut, passThroughRatio, totalIn, totalOut)"
+    },
+    "members": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^0x[a-fA-F0-9]{40}$"
+      },
+      "description": "Addresses identified as belonging to the same behavioral cluster"
+    },
+    "exitPoints": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^0x[a-fA-F0-9]{40}$"
+      },
+      "description": "Identified exit point addresses (e.g. mixers, bridge deposits, off-ramps)"
+    },
+    "linked": {
+      "type": "boolean",
+      "description": "True if the target wallet is linked to a known or suspicious cluster"
+    },
+    "reason": {
+      "type": "string",
+      "description": "Human and oracle readable explanation of the risk assessment"
+    },
+    "dataSource": {
+      "type": "string",
+      "enum": ["synthetic", "testnet"],
+      "description": "Origin of the underlying graph data"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp of the analysis execution"
+    }
+  },
+  "additionalProperties": false
+}
+

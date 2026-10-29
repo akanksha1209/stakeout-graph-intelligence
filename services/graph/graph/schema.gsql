@@ -1,0 +1,63 @@
+USE GLOBAL
+
+// ==============================================================================
+// STAKEOUT CRYPTO SCAM ORACLE - GRAPH SCHEMA (GSQL)
+// Compliance:
+// - All vertices and edges track data_source ("synthetic" / "testnet")
+// - No hardcoded network elements or addresses
+// ==============================================================================
+
+CREATE VERTEX Wallet(
+    PRIMARY_ID address STRING,
+    is_exit_point BOOL DEFAULT false,
+    data_source STRING DEFAULT "synthetic"
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE VERTEX Report(
+    PRIMARY_ID report_id STRING,
+    reporter STRING,
+    reason STRING,
+    timestamp INT,
+    data_source STRING DEFAULT "synthetic"
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE VERTEX Cluster(
+    PRIMARY_ID cluster_id STRING,
+    behavior_score DOUBLE,
+    data_source STRING DEFAULT "synthetic"
+) WITH STATS="OUTDEGREE_BY_EDGETYPE";
+
+CREATE DIRECTED EDGE TRANSFER(
+    FROM Wallet,
+    TO Wallet,
+    amount DOUBLE,
+    timestamp INT,
+    tx_id STRING,
+    data_source STRING DEFAULT "synthetic"
+) WITH REVERSE_EDGE="REVERSE_TRANSFER";
+
+CREATE DIRECTED EDGE REPORTED(
+    FROM Wallet,
+    TO Report,
+    timestamp INT,
+    data_source STRING DEFAULT "synthetic"
+) WITH REVERSE_EDGE="WALLET_REPORTED_BY";
+
+CREATE DIRECTED EDGE MEMBER_OF(
+    FROM Wallet,
+    TO Cluster,
+    data_source STRING DEFAULT "synthetic"
+) WITH REVERSE_EDGE="CLUSTER_HAS_MEMBER";
+
+CREATE GRAPH StakeoutGraph(
+    Wallet,
+    Report,
+    Cluster,
+    TRANSFER,
+    REVERSE_TRANSFER,
+    REPORTED,
+    WALLET_REPORTED_BY,
+    MEMBER_OF,
+    CLUSTER_HAS_MEMBER
+);
+
