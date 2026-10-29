@@ -21,9 +21,8 @@ WORKSPACE_DIR = SERVICE_DIR.parent.parent
 
 CANDIDATE_PATHS = [
     Path(os.getenv("SCORING_CONFIG_PATH", "")) if os.getenv("SCORING_CONFIG_PATH") else None,
-    SERVICE_DIR / "config" / "scoring.json",
+    # ONLY look in the root config folder (One source of truth)
     WORKSPACE_DIR / "config" / "scoring.json",
-    SERVICE_DIR / "drafts" / "scoring.draft.json",
     WORKSPACE_DIR / "drafts" / "scoring.draft.json",
 ]
 

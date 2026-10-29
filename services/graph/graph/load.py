@@ -193,12 +193,49 @@ def execute_load(dry_run: bool = False) -> None:
     conn.upsertEdges("Wallet", "TRANSFER", "Wallet", payloads["transfers"])
 
     # Upsert MEMBER_OF Edges
+        # Upsert MEMBER_OF Edges
     if payloads["members"]:
         print("[Stakeout Loader] Upserting MEMBER_OF edges...")
         conn.upsertEdges("Wallet", "MEMBER_OF", "Cluster", payloads["members"])
 
-    print("[Stakeout Loader] SUCCESS: All graph vertices and edges successfully loaded into TigerGraph!")
+    # Upsert Report Vertices and REPORTED edges
+    # Dynamically find a scam master from the scenarios to attach the reports to
+    wallet_meta = scenarios.get("wallets", {})
+    clusters_meta = scenarios.get("clusters", {})
+    target_for_reports = None
 
+    for addr, data in wallet_meta.items():
+        if data.get("type") == "scam_master":
+            target_for_reports = addr
+            break
+
+    if not target_for_reports and clusters_meta:
+        first_cluster = list(clusters_meta.values())[0]
+        if first_cluster.get("members"):
+            target_for_reports = first_cluster["members"][0]
+
+    if target_for_reports:
+        print(f"[Stakeout Loader] Upserting 3 Report vertices and REPORTED edges targeting {target_for_reports}...")
+        reports_data = []
+        reported_edges = []
+        
+        for i in range(1, 4):
+            report_id = f"report_{i}"
+            reports_data.append((
+                report_id,
+                {
+                    "target_address": target_for_reports,
+                    "evidence_hash": f"hash_{i}"
+                }
+            ))
+            reported_edges.append((report_id, target_for_reports, {}))
+            
+        conn.upsertVertices("Report", reports_data)
+        conn.upsertEdges("Report", "REPORTED", "Wallet", reported_edges)
+    else:
+        print("[Stakeout Loader] WARNING: Could not find a scam_master to attach reports to.")
+
+    print("[Stakeout Loader] SUCCESS: All graph vertices and edges successfully loaded into TigerGraph!")
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Ingest Stakeout data into TigerGraph")

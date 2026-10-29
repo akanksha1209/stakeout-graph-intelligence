@@ -89,24 +89,34 @@ def analyze_wallet(address: str):
     
     
 
-    # 2. Safely extract the first item from the result list: raw_data = query_results[0]["result"][0]
+        # 2. Safely extract dynamic arrays from GSQL
     raw_data = {}
-    if (
-        isinstance(query_results, list)
-        and len(query_results) > 0
-        and isinstance(query_results[0], dict)
-    ):
-        result_list = query_results[0].get("result", [])
-        if isinstance(result_list, list) and len(result_list) > 0 and isinstance(result_list[0], dict):
-            raw_data = result_list[0]
-        elif isinstance(result_list, dict):
-            raw_data = result_list
+    cluster_ids, members_list, exit_points_list = [], [], []
+    
+    if isinstance(query_results, list) and len(query_results) > 0:
+        entry = query_results[0]
+        for key, val in entry.items():
+            if key == "clusterIds": 
+                cluster_ids = val
+            elif key == "membersList": 
+                members_list = val
+            elif key == "exitPointsList": 
+                exit_points_list = val
+            elif isinstance(val, list) and len(val) > 0 and isinstance(val[0], dict):
+                raw_data = val[0]
     elif isinstance(query_results, dict):
-        result_list = query_results.get("result", [])
-        if isinstance(result_list, list) and len(result_list) > 0 and isinstance(result_list[0], dict):
-            raw_data = result_list[0]
-        elif isinstance(result_list, dict):
-            raw_data = result_list
+        entry = query_results
+        for key, val in entry.items():
+            if key == "clusterIds": 
+                cluster_ids = val
+            elif key == "membersList": 
+                members_list = val
+            elif key == "exitPointsList": 
+                exit_points_list = val
+            elif isinstance(val, list) and len(val) > 0 and isinstance(val[0], dict):
+                raw_data = val[0]
+
+    real_cluster_id = cluster_ids[0] if cluster_ids else None
 
     # 3. Extract metrics by checking BOTH root level and "attributes" dictionary
     attrs = raw_data.get("attributes", raw_data)
@@ -139,6 +149,8 @@ def analyze_wallet(address: str):
     except (ValueError, TypeError):
         out_degree = 0
 
+    
+
     # 4. Calculate score using scoring engine (No hardcoding)
     score_result = calculate_score({
         "totalIn": total_in,
@@ -156,11 +168,13 @@ def analyze_wallet(address: str):
     # 5. Return exact JSON schema required
     return {
         "target": cleaned_address,
-        "clusterId": "0x" + "0" * 64,
+        "clusterId": real_cluster_id, 
         "behaviorScore": behavior_score,
-        "signals": signals,
-        "members": [],
-        "exitPoints": [],
+        "signals": fired_signals,     
+        "metrics": score_result.get("signalDetails", []),
+        "members": members_list if members_list else [cleaned_address], 
+        "exitPoints": exit_points_list, 
+        "unrelatedReporterCount": int(attrs.get("reporter_count", 0)), 
         "linked": linked,
         "reason": dynamic_reason,
         "dataSource": "synthetic",
@@ -276,6 +290,53 @@ def get_cluster_graph(clusterId: str):
     }
 
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=GRAPH_SERVICE_PORT)
+@app.get("/link_candidates/{clusterId}")
+def get_link_candidates(clusterId: str):
+    """
+    Returns potential link candidates for a cluster, including the flags required by the verifier.
+    """
+    # Validate bytes32 format
+    if not (
+        clusterId.startswith("0x")
+        and len(clusterId) == 66
+        and all(c in "0123456789abcdefABCDEF" for c in clusterId[2:])
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid clusterId format. Expected 0x followed by 64 hex characters (bytes32).",
+        )
+
+    try:
+        # Call the new GSQL query we just installed
+        query_results = conn.runInstalledQuery("get_link_candidates", {"target_cluster": clusterId})
+        
+        candidates = []
+        
+        # Parse the TigerGraph output
+        if isinstance(query_results, list) and len(query_results) > 0:
+            entry = query_results[0]
+            for key, val in entry.items():
+                if key.lower() == "result":
+                    for item in val:
+                        addr = item.get("address") or item.get("v_id")
+                        if addr:
+                            incoming = int(item.get("incoming", 0))
+                            outgoing = int(item.get("outgoing", 0))
+                            
+                            candidates.append({
+                                "address": addr,
+                                "fundedByCluster": True,
+                                "repeatedStructuredOutflowToCluster": incoming > 1,
+                                "forwardsOnwardLikeMember": outgoing > 0,
+                                "isKnownVictim": False,
+                                "isOneOffPayer": incoming == 1,
+                                "dataSource": "synthetic"
+                            })
+        
+        return {"candidates": candidates}
+        
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=f"TigerGraph query execution failed: {str(exc)}",
+        )
