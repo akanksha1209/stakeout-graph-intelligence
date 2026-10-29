@@ -1,0 +1,22 @@
+USE GRAPH StakeoutFinal
+DROP QUERY analyze_wallet
+
+CREATE QUERY analyze_wallet(STRING target_address) FOR GRAPH StakeoutFinal {
+  SumAccum<DOUBLE> @total_in;
+  SumAccum<DOUBLE> @total_out;
+  SumAccum<INT> @in_degree;
+  SumAccum<INT> @out_degree;
+
+  Start = {Wallet.*};
+
+  Outbound = SELECT s FROM Start:s -(TRANSFER:e)-> Wallet:t
+             ACCUM s.@total_out += e.amount, s.@out_degree += 1;
+
+  Inbound = SELECT s FROM Start:s -(TRANSFER:e)-> Wallet:t
+            ACCUM t.@total_in += e.amount, t.@in_degree += 1;
+
+  TargetNode = SELECT s FROM Start:s WHERE s.address == target_address;
+
+  PRINT TargetNode[TargetNode.address AS address, TargetNode.@total_in AS total_in, TargetNode.@total_out AS total_out, TargetNode.@in_degree AS in_degree, TargetNode.@out_degree AS out_degree] AS result;
+}
+INSTALL QUERY analyze_wallet

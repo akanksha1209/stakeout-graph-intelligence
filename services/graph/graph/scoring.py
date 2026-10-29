@@ -158,15 +158,12 @@ def calculate_score(wallet_data: Dict[str, Any]) -> Dict[str, Any]:
     else:
         pass_through_ratio = (total_out / total_in) if total_in > 0.0 else 0.0
 
-    try:
-        median_forward_time = float(wallet_data.get("medianForwardTime", wallet_data.get("median_forward_time", -1.0)) or -1.0)
-    except (ValueError, TypeError):
-        median_forward_time = -1.0
+    val1 = wallet_data.get("medianForwardTime", wallet_data.get("median_forward_time", -1.0))
+    median_forward_time = float(val1) if val1 is not None else -1.0
+    val2 = wallet_data.get("hopsToExit", wallet_data.get("hops_to_exit", -1))
+    hops_to_exit = int(val2) if val2 is not None else -1
 
-    try:
-        hops_to_exit = int(wallet_data.get("hopsToExit", wallet_data.get("hops_to_exit", -1)) or -1)
-    except (ValueError, TypeError):
-        hops_to_exit = -1
+
 
     try:
         repeated_flows = int(wallet_data.get("repeatedFlows", wallet_data.get("repeated_flows", 0)) or 0)

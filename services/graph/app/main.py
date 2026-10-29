@@ -39,7 +39,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -86,8 +86,8 @@ def analyze_wallet(address: str):
             detail=f"TigerGraph query execution failed: {str(exc)}",
         )
 
-    # Debug print as requested
-    print(f"[DEBUG] Raw TigerGraph Response: {query_results}")
+    
+    
 
     # 2. Safely extract the first item from the result list: raw_data = query_results[0]["result"][0]
     raw_data = {}
@@ -122,6 +122,12 @@ def analyze_wallet(address: str):
         total_out = float(attrs.get("total_out", raw_data.get("total_out", 0.0)) or 0.0)
     except (ValueError, TypeError):
         total_out = 0.0
+    if total_in == 0.0 and total_out == 0.0:
+        raise HTTPException(
+            status_code=404,
+            detail="Wallet not found in graph database. No transactions found for this address."
+        )
+
 
     try:
         in_degree = int(attrs.get("in_degree", raw_data.get("in_degree", 0)) or 0)
@@ -145,19 +151,18 @@ def analyze_wallet(address: str):
     linked = score_result["linked"]
     signals = score_result["signalDetails"]
 
-    # Mock clusterId for now: 0x followed by 64 zeros (bytes32 format)
-    mock_cluster_id = "0x" + "0" * 64
-
+    fired_signals = score_result.get("signals", [])
+    dynamic_reason = f"Triggered signals: {', '.join(fired_signals)}" if fired_signals else "Behavior below threshold."
     # 5. Return exact JSON schema required
     return {
         "target": cleaned_address,
-        "clusterId": mock_cluster_id,
+        "clusterId": "0x" + "0" * 64,
         "behaviorScore": behavior_score,
         "signals": signals,
-        "members": [cleaned_address],
+        "members": [],
         "exitPoints": [],
         "linked": linked,
-        "reason": "Calculated from graph data.",
+        "reason": dynamic_reason,
         "dataSource": "synthetic",
         "createdAt": datetime.datetime.now(datetime.timezone.utc).isoformat(),
     }

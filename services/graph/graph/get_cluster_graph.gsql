@@ -1,0 +1,11 @@
+USE GRAPH StakeoutFinal
+DROP QUERY get_cluster_graph
+
+CREATE QUERY get_cluster_graph(STRING target_cluster) FOR GRAPH StakeoutFinal {
+  Start = {Cluster.*};
+  ClusterNode = SELECT c FROM Start:c WHERE c.cluster_id == target_cluster;
+  Members = SELECT w FROM ClusterNode:c -(MEMBER_OF:e)- Wallet:w;
+  Transfers = SELECT src FROM Members:src -(TRANSFER:e)-> Wallet:tgt;
+  PRINT Members[Members.address AS id], Transfers[Transfers.address AS src, Transfers.address AS tgt];
+}
+INSTALL QUERY get_cluster_graph
